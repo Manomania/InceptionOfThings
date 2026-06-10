@@ -1,0 +1,26 @@
+BOX = "debian/bookworm64"
+
+LOGIN = "maximart" 
+MASTERNAME = LOGIN + "S"
+
+BASEIP = "192.168.56."
+IPMASTER = BASEIP + "110"
+
+SCRIPT_SERVER = "./scripts/server.sh"
+
+Vagrant.configure("2") do |config|
+  config.vm.box = BOX
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+    v.cpus = 1
+  end 
+
+  config.vm.define MASTERNAME do |master|
+    master.vm.hostname = MASTERNAME
+    master.vm.network "private_network", ip: IPMASTER
+    master.vm.provision "shell", path: SCRIPT_SERVER
+  end
+
+end
+
