@@ -1,7 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-two-html
+data:
+  index.html: |
+    <html>
+      <body><h1>App Two</h1></body>
+    </html>
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-two-deployment
+  name: app-two
   labels:
     app: app-two
 spec:
@@ -14,8 +24,15 @@ spec:
       labels:
         app: app-two
     spec:
+      volumes:
+        - name: html
+          configMap:
+            name: app-two-html
       containers:
       - name: app-two
         image: nginx:1.14.2
+        volumeMounts:
+          - name: html
+            mountPath: /usr/share/nginx/html
         ports:
         - containerPort: 80
