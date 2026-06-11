@@ -16,3 +16,6 @@ kubectl apply -f /vagrant/confs/app2/
 
 echo "[LOG] Deploying application three"
 kubectl apply -f /vagrant/confs/app3/
+
+echo "[LOG] Applying ingress"
+kubectl apply -f /vagrant/confs
