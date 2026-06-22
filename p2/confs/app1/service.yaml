@@ -4,7 +4,7 @@ metadata:
   name: app-one
 spec:
   selector:
-    app: app-one
+    app.kubernetes.io/name: app-one
   ports:
     - protocol: TCP
       port: 80

@@ -4,7 +4,7 @@ metadata:
   name: app-three
 spec:
   selector:
-    app: app-three
+    app.kubernetes.io/name: app-three
   ports:
     - protocol: TCP
       port: 80

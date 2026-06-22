@@ -13,16 +13,16 @@ kind: Deployment
 metadata:
   name: app-three
   labels:
-    app: app-three
+    app.kubernetes.io/name: app-three
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app-three
+      app.kubernetes.io/name: app-three
   template:
     metadata:
       labels:
-        app: app-three
+        app.kubernetes.io/name: app-three
     spec:
       volumes:
         - name: html
