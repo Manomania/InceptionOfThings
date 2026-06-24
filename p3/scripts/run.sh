@@ -131,8 +131,13 @@ echo -e "${blue}[LOG] If you need to kill the server, run this command: 'sudo ki
 
 #TODO ADD APPLICATION WIL42 FOR ARGOCD AS IAC
 
-if ! argocd app create wil42 --repo https://github.com/Manomania/InceptionOfThings --path wil42 --dest-server https://kubernetes.default.svc --dest-namespace dev --revision main; then
+argocd proj create development
+argocd proj add-source development https://github.com/Manomania/InceptionOfThings
+argocd proj add-destination development https://kubernetes.default.svc dev
+
+if ! kubectl apply -f /home/maximart/Inception-of-Things/p3/confs/application.yaml >> "$log_file"; then
 	echo -ne "\r${red}[LOG] Failed to create wil42${reset}"
+	echo -e "${red}[LOG] Deleting cluster maximart-p3${reset}"
 	k3d cluster delete maximart-p3 &> /dev/null
 	echo -e "${red}\n[LOG] LOGS: ${reset}"
 	cat "$log_file"

@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wil42
+  namespace: argocd
+spec:
+  project: development
+  source:
+    repoURL: https://github.com/Manomania/InceptionOfThings
+    targetRevision: HEAD
+    path: p3/confs/wil42
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
