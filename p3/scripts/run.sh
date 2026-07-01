@@ -93,7 +93,9 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443 &> /tmp/argocd-logs &
 argocd_server_pid="/tmp/argocd-p3-pid.pid"
 echo $! > "$argocd_server_pid"
 echo -ne "\r${green}[LOG] Argo CD Server is up${reset}\n"
-sleep 3
+until curl -sk https://localhost:8080 &> /dev/null; do 
+	sleep 1
+done
 
 password=$(argocd admin initial-password -n argocd | head -1)
 
@@ -176,8 +178,10 @@ if ! argocd proj add-destination development https://kubernetes.default.svc dev 
 fi
 echo -ne "\r${green}[LOG] Destination has been added to 'development' project${reset}\n"
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 echo -ne "${orange}[LOG] Apply wil42 to Argo CD...${reset}"
-if ! kubectl apply -f /home/maximart/Inception-of-Things/p3/confs/application.yaml >> "$log_file"; then
+if ! kubectl apply -f "$SCRIPT_DIR/../confs/application.yaml" >> "$log_file"; then
 	echo -ne "\r${red}[LOG] Failed to create wil42${reset}"
 	echo -e "${red}[LOG] Deleting cluster maximart-p3${reset}"
 	k3d cluster delete maximart-p3 &> /dev/null
